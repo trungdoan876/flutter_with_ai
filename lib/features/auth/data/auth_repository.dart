@@ -14,7 +14,7 @@ class AuthRepository {
         name: 'Test Intern',
       );
     } else {
-      throw Exception('Email hoặc mật khẩu không chính xác!');
+      throw Exception('Invalid email or password!');
     }
   }
 

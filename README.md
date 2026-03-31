@@ -1,41 +1,3 @@
-﻿# Flutter with AI - Bai Tap Su dung AI
-
-> Xay dung bang Flutter + BLoC, phat trien hoan toan voi su ho tro cua AI.
-
----
-
-## Muc luc
-- [Tổng quan ứng dụng](#tổng-quan-ứng-dụng)
-- [Phần 1 – Platform (AI-First Thinking)](#phần-1--platform-ai-first-thinking)
-- [Phần 2 – Source Control (AI Usage)](#phần-2--source-control-ai-usage)
-- [Phần 3 – Cấu trúc & Kiến trúc](#phần-3--cấu-trúc--kiến-trúc)
-- [Ứng dụng demo](#ứng-dụng-demo)
-- [Cài đặt & Chạy](#cài-đặt--chạy)
-
----
-
-## Tong quan ung dung
-
-Ứng dụng Flutter gồm 2 màn hình chính:
-- **Màn hình Đăng nhập** – kiểm tra email/mật khẩu, xác thực mock, hiển thị lỗi qua SnackBar
-- **Màn hình Danh sách liên hệ** – 12 contact mock, tìm kiếm real-time, xem chi tiết qua bottom sheet, đăng xuất
-
----
-
-## Phần 1 – Platform (AI-First Thinking)
-
-### 1.1 Dùng AI để học Flutter nhanh
-
-Thay vì đọc toàn bộ tài liệu từ đầu, mình dùng AI theo chiến lược **học có mục tiêu**:
-
-1. **Nhờ AI giải thích các khái niệm cốt lõi** trước (Widget tree, StatelessWidget vs StatefulWidget, hot reload)
-2. **Nhờ AI so sánh** với các framework mình đã biết để nắm nhanh hơn
-3. **Nhờ AI tạo code mẫu** → chạy thử → hỏi tiếp khi gặp lỗi
-4. **Đọc tài liệu chính thống** để xác nhận những gì AI giải thích là đúng
-
-Cách tiếp cận này giúp mình hiểu Flutter trong 1 ngày thay vì mất nhiều ngày đọc docs từ đầu đến cuối.
-
----
 
 ### 1.2 Prompt học Flutter trong 1 ngày
 
@@ -133,158 +95,54 @@ Tôi sử dụng prompt để AI tự đánh giá, phát hiện lỗi mà lần 
 
 ---
 
-## Phần 2 – Source Control (AI Usage)
+## Part 2 - Source Control (AI Usage)
 
-### 2.1 Dùng AI tạo quy trình làm việc với Git
+### 2.1 Using AI to Define Git Workflow
 
-**Prompt đã dùng:**
+**AI Proposed Workflow applied to this project:**
+
+**Branch Structure:**
 ```
-You are a senior developer.
-
-Suggest a Git workflow for a small team building a Flutter app.
-
-Requirements:
-- 3-5 developers
-- Use feature branches
-- Ensure code review before merge
-- Keep main branch stable
-
-Explain:
-- Branch structure
-- Naming convention
-- Merge strategy
+main                    <- main branch, stable, only contains reviewed code
+└── develop             <- integration branch, merge features here before main
+    ├── login            <- login feature
+    ├── contact          <- contact list feature
+    ├── fix/state-bug    <- fix BLoC state emission bug
+    └── docs/readme      <- documentation update
 ```
 
-**Kết quả AI đề xuất và mình áp dụng cho project:**
-
-**Cấu trúc nhánh:**
+**Naming Convention:**
 ```
-main                    ← nhánh chính, luôn ổn định, chỉ chứa code đã review
-└── develop             ← nhánh tích hợp, merge feature vào đây trước khi lên main  
-    ├── feature/login         ← tính năng đăng nhập
-    ├── feature/contact-list  ← danh sách liên hệ
-    ├── fix/state-not-emit    ← sửa bug BLoC không emit state
-    └── docs/readme           ← cập nhật tài liệu
+feature/<feature-name>    -> feature/login, feature/contact
+fix/<bug-description>     -> fix/state-not-emit
+docs/<doc-name>           -> docs/readme
+chore/<task>              -> chore/update-dependencies
 ```
 
-**Quy tắc đặt tên nhánh:**
+**Commit Convention (Conventional Commits):**
 ```
-feature/<tên-tính-năng>   →  feature/login, feature/contact-list
-fix/<mô-tả-bug>           →  fix/state-not-emit, fix/login-validation
-docs/<tên-tài-liệu>       →  docs/readme
-chore/<công-việc>         →  chore/update-dependencies
-```
-
-**Quy tắc viết commit (Conventional Commits):**
-```
-feat: thêm màn hình đăng nhập với form validation
-fix: thêm await vào authRepository để fix lỗi state không emit
-refactor: tách widget ContactCard thành file riêng
-docs: cập nhật README phần AI usage
-chore: thêm flutter_bloc, equatable vào pubspec.yaml
+feat: add login screen with form validation
+fix: add await to authRepository to fix state emission bug
+refactor: extract ContactCard widget to separate file
+docs: update README AI usage section
+chore: add flutter_bloc, equatable to pubspec.yaml
 ```
 
-**Chiến lược merge:**
-- Tạo Pull Request (PR) từ `feature/*` → `develop`
-- Cần ít nhất 1 người review trước khi merge
-- Merge `develop` → `main` khi hoàn chỉnh tính năng
+**Merge Strategy:**
+- Create Pull Request (PR) from `feature/*` -> `develop`.
+- At least 1 review required.
+- Merge `develop` -> `main` when features are finalized.
 
-**AI Validate lại:** Mình kiểm tra quy trình này với thực tế dự án — phù hợp với team 3-5 người và đảm bảo nhánh `main` luôn ổn định.
+### 2.2 Using AI to Resolve Merge Conflicts
 
-**Đánh giá kết quả:** đáp ứng tốt yêu cầu cơ bản, nhưng cần cải tiến để đạt mức production-ready
-**Nâng cấp Prompt:**
-```
-You are a senior developer with real-world experience managing production teams.
+Instead of guessing which version to keep, I used AI as a "consultant" that understands the code:
 
-Suggest a Git workflow for a small team building a Flutter app.
+1. **Paste conflict block into AI** with a brief description of the branches' purposes.
+2. **Request AI Analysis:** Are the changes contradictory? Which one should be kept?
+3. **Read AI Explanation** -> understand reasoning -> make decision.
+4. **Apply, run app** to confirm, then commit.
 
-Requirements:
-- 3-5 developers
-- Use feature branches
-- Ensure code review before merge
-- Keep main branch stable
-
-Explain:
-- Branch structure
-- Naming convention
-- Merge strategy
-
-Then:
-1. Critically evaluate your own solution:
-   - What are the weaknesses?
-   - What problems might happen in real projects?
-
-2. Improve the workflow to be closer to production-ready:
-   - Add branch protection rules
-   - Add CI/CD checks (Flutter specific)
-   - Add rebase strategy
-   - Add hotfix flow
-
-3. Provide final recommended version (clean and optimized)
-```
-
-**Kết quả AI trả về (production-ready version):**
-
-**Điểm yếu của workflow cơ bản (AI tự đánh giá):**
-- Không có branch protection → ai cũng có thể push thẳng lên `main`
-- Không có CI/CD → merge code lỗi mà không biết
-- Không có hotfix flow → khi có bug production, không biết xử lý thế nào
-- Thiếu rebase strategy → commit history lộn xộn theo thời gian
-
-**Workflow nâng cấp – final recommended version:**
-
-```
-main        ← protected, chỉ merge từ develop (qua PR + CI pass)
-├── develop ← protected, chỉ merge từ feature/* (qua PR + 1 reviewer)
-│   ├── feature/login
-│   ├── feature/contact-list
-│   └── fix/state-bug
-└── hotfix/critical-bug  ← tạo từ main, merge thẳng về main + develop
-```
-
-**Branch protection rules (cài trên GitHub):**
-- `main`: yêu cầu PR + CI pass + 1 approval, không cho force push
-- `develop`: yêu cầu PR + 1 approval
-
-**CI/CD checks cho Flutter:**
-```yaml
-# Chạy tự động khi tạo PR
-- flutter analyze        # kiểm tra lỗi code
-- flutter test           # chạy unit test
-- flutter build apk      # đảm bảo build không bị lỗi
-```
-
-**Rebase strategy:**
-```bash
-# Trước khi tạo PR, luôn rebase lên develop mới nhất
-git fetch origin
-git rebase origin/develop
-# → giữ commit history sạch, tuyến tính
-```
-
-**Hotfix flow (khi có bug trên production):**
-```bash
-git checkout -b hotfix/ten-bug main  # tạo từ main
-# sửa bug...
-git checkout main && git merge hotfix/ten-bug  # merge lên main
-git checkout develop && git merge hotfix/ten-bug  # sync về develop
-git tag v1.0.1  # đánh version
-```
-
-**Validate lại:** Workflow nâng cấp này sát với thực tế hơn — CI/CD tự động phát hiện lỗi trước khi merge, hotfix flow giải quyết được tình huống khẩn cấp trên production.
-
----
-
-### 2.2 Dùng AI giải quyết xung đột khi merge
-
-Khi gặp merge conflict, thay vì tự đoán nên giữ version nào, mình dùng AI như một "người tư vấn" hiểu code:
-
-1. **Paste đoạn conflict vào AI** kèm mô tả ngắn về 2 nhánh đang làm gì
-2. **Hỏi AI phân tích:** Hai thay đổi có mâu thuẫn nhau không? Nên giữ cái nào?
-3. **Đọc giải thích của AI** → hiểu lý do → tự quyết định (không làm theo mù quáng)
-4. **Áp dụng, chạy lại app** để xác nhận không bị lỗi, rồi commit
-
-> **Điểm quan trọng:** AI giúp giải thích *tại sao* nên giữ version nào — giúp mình học được từ conflict thay vì chỉ chọn đại.
+**Key point:** AI helps explain *why* a certain version should be kept, helping me learn from the conflict.
 
 ---
 
@@ -390,72 +248,13 @@ Bao gồm:
 Tech: flutter_bloc 8.x (dùng on<Event> handler, KHÔNG dùng mapEventToState)
 ```
 
-**Câu trả lời AI (version 1):**
+## Part 3 - Structure & Architecture
 
-BLoC (Business Logic Component) là một pattern giúp tách biệt logic xử lý ra khỏi UI. Thay vì để UI tự xử lý dữ liệu, UI chỉ gửi Event và nhận State để hiển thị.
+### 3.1 Learning BLoC
 
-- **Event**: Hành động người dùng thực hiện (nhấn nút, nhập text)
-- **State**: Kết quả cần hiển thị lên màn hình (loading, thành công, lỗi)
-- **Bloc**: Nơi nhận Event, xử lý logic, rồi emit State mới
+**AI Learning Strategy (v2):**
 
-Ví dụ counter với `flutter_bloc 8.x`:
-```dart
-// Event
-abstract class CounterEvent {}
-class Increment extends CounterEvent {}
-
-// State
-class CounterState {
-  final int count;
-  CounterState(this.count);
-}
-
-// Bloc
-class CounterBloc extends Bloc<CounterEvent, CounterState> {
-  CounterBloc() : super(CounterState(0)) {
-    on<Increment>((event, emit) => emit(CounterState(state.count + 1)));
-  }
-}
-```
-**Equatable** giúp so sánh 2 State — nếu State mới giống State cũ thì UI không rebuild lại, tiết kiệm hiệu năng.
-
-**Đánh giá version 1:**
-- **Không có teaching style** — AI giải thích theo cách riêng, đôi khi quá hàn lâm với người mới
-- **Không có bài tập thực hành** — đọc xong nhưng không biết áp dụng ngay
-- **Không hỏi khi nào KHÔNG dùng BLoC** — chỉ biết dùng mà không biết giới hạn
-
-→ **Nâng cấp lên version 2 để học thực tế hơn**
-
----
-
-**Prompt version 2:**
-```
-You are a senior Flutter developer and a great teacher.
-
-I want to understand BLoC (Business Logic Component) in Flutter.
-
-Requirements:
-- Explain BLoC in simple terms (max 5 lines)
-- Show how data flows (Event → Bloc → State → UI)
-- Provide a minimal working example
-- Explain each part: Event, State, Bloc
-- Show when to use BLoC and when NOT to use it
-
-Teaching style:
-- Step-by-step
-- Focus on practical understanding
-- Avoid unnecessary theory
-
-After explanation:
-- Give me a small practice task
-- Ask me to modify the code
-
-Start with a simple counter example.
-```
-
-**Câu trả lời AI (version 2):**
-
-**1. BLoC in simple terms (≤ 5 lines):**
+**1. BLoC in simple terms (<= 5 lines):**
 ```
 BLoC = separates UI from logic
 UI doesn't change data directly
@@ -470,7 +269,7 @@ Button Click (UI)
       ↓
    Event (Increment)
       ↓
-   Bloc (xử lý logic)
+   Bloc (Business Logic)
       ↓
    State (count = 1)
       ↓
@@ -535,216 +334,52 @@ class CounterPage extends StatelessWidget {
 }
 ```
 
-**4. Giải thích từng phần:**
-- **Event** (Input) = hành động người dùng → `IncrementEvent`, `DecrementEvent`
-- **State** (Output) = dữ liệu hiện tại cho UI → `count`
-- **Bloc** (Brain) = nhận Event → xử lý logic → emit State mới
+**4. Component Explanation:**
+- **Event** (Input) = User actions -> `IncrementEvent`, `DecrementEvent`.
+- **State** (Output) = Data for the UI -> `count`.
+- **Bloc** (The Brain) = Processes Events -> Performs Logic -> Emits new States.
 
 **5. When to use BLoC vs NOT:**
 
-Dung BLoC khi:
-- App có nhiều màn hình, cần share state
-- Logic phức tạp, cần clean architecture
-- Team project, dễ maintain
+**Use BLoC when:**
+- App has many screens and needs to share state.
+- Complex logic requiring Clean Architecture.
+- Team projects needing maintainable code.
 
-Tranh BLoC khi:
-- App đơn giản (counter nhỏ, CRUD đơn)
-- Boilerplate quá nhiều cho logic nhỏ
-- `setState` hoặc Provider là đủ
-
-**6. Practice Task:**
-> Thêm Reset button — tạo `ResetEvent`, xử lý trong Bloc để `count = 0`
-
-**7. Challenge:**
-> Thêm button "Double" → `count * 2`. Gợi ý: tạo `DoubleEvent`, handle trong Bloc.
-
-**Đánh giá version 2:**
-- **Có teaching style rõ ràng** → AI điều chỉnh cách giải thích phù hợp người mới
-- **Có bài tập ngay sau giải thích** → học đi đôi với hành, không học chay
-- **Hỏi cả khi KHÔNG nên dùng** → hiểu được giới hạn của pattern
-- **Output có cấu trúc từng bước** → dễ follow hơn v1 rất nhiều
-
-**Validate lại:** Đọc [bloclibrary.dev](https://bloclibrary.dev) — AI đúng về concept nhưng ban đầu sinh code theo syntax cũ (v6 — `mapEventToState`). Phải thêm `flutter_bloc 8.x` vào prompt mới ra đúng pattern `on<Event>`.
+**Avoid BLoC when:**
+- Simple apps (e.g., small counter, basic CRUD).
+- Boilerplate is too much for simple logic.
+- `setState` or Provider is sufficient.
 
 ---
 
+### 3.2 BLoC vs MVVM Comparison
 
-### 3.2 So sánh BLoC vs MVVM (có chứng minh)
+**AI Response Summary:**
 
-**Prompt đã dùng:**
-```
-You are a senior software architect.
+**BLoC version:** (Standard Event-State flow)
+**MVVM version:** (ViewModel with ChangeNotifier/notifyListeners)
 
-Compare BLoC and MVVM architecture in Flutter.
+**Data flow Comparison:**
+- **BLoC:** UI -> dispatch(Event) -> Bloc -> emit(State) -> UI rebuild (Unidirectional).
+- **MVVM:** UI -> vm.method() -> data changes -> notifyListeners() -> UI rebuild.
 
-Requirements:
-- Explain both BLoC and MVVM briefly
-- Compare them based on: Structure, Data flow, Complexity, Testability, Scalability
-- Provide a real example (counter app)
-- Show sample code for BOTH architectures
-- Show data flow diagram
+**Conclusion - Choosing the right one:**
 
-Output format:
-1. BLoC explanation
-2. MVVM explanation
-3. Comparison with reasoning
-4. Code example (BLoC version + MVVM version)
-5. Data flow diagram
-6. Conclusion: when to use each
-```
+**Choose BLoC when:**
+- Large systems with complex state management.
+- Consistency (Pattern-based) is required for team collaboration.
+- High priority on Unit Testing business logic.
 
-**Câu trả lời AI:**
-
-
-**BLoC version:**
-```dart
-// Event
-abstract class CounterEvent {}
-class IncrementEvent extends CounterEvent {}
-
-// State
-class CounterState {
-  final int count;
-  CounterState(this.count);
-}
-
-// Bloc
-class CounterBloc extends Bloc<CounterEvent, CounterState> {
-  CounterBloc() : super(CounterState(0)) {
-    on<IncrementEvent>((event, emit) {
-      emit(CounterState(state.count + 1));
-    });
-  }
-}
-
-// UI
-BlocBuilder<CounterBloc, CounterState>(
-  builder: (context, state) => Text('${state.count}'),
-)
-ElevatedButton(
-  onPressed: () => context.read<CounterBloc>().add(IncrementEvent()),
-  child: Text('Increment'),
-)
-```
-
-**MVVM version:**
-```dart
-// ViewModel
-class CounterViewModel extends ChangeNotifier {
-  int count = 0;
-
-  void increment() {
-    count++;
-    notifyListeners();
-  }
-}
-
-// UI
-ChangeNotifierProvider(
-  create: (_) => CounterViewModel(),
-  child: Consumer<CounterViewModel>(
-    builder: (context, vm, _) => Column(
-      children: [
-        Text('${vm.count}'),
-        ElevatedButton(
-          onPressed: vm.increment,
-          child: Text('Increment'),
-        ),
-      ],
-    ),
-  ),
-)
-```
-
-**5. Data flow diagram:**
-```
-── BLoC ──────────────────────────────────────
-UI → dispatch(IncrementEvent) → Bloc → emit(CounterState) → UI rebuild
-
-── MVVM ──────────────────────────────────────
-UI → vm.increment() → count++ → notifyListeners() → UI rebuild
-```
-
-**6. Kết luận – khi nào dùng cái nào:**
-
-**Chọn BLoC khi:**
-- Hệ thống lớn, có nhiều State phức tạp cần quản lý.
-- Cần đảm bảo tính nhất quán (Pattern-based) trong môi trường làm việc nhóm.
-- Đặt ưu tiên cao cho việc Unit Test các logic xử lý dữ liệu.
-
-**Chọn MVVM khi:**
-- Dự án quy mô nhỏ hoặc trung bình, cần tốc độ phát triển (Time-to-market) nhanh.
-- Cấu trúc dữ liệu đơn giản, không có quá nhiều ràng buộc phức tạp.
-- Đội ngũ phát triển đã quen thuộc với mô hình ViewModel/Binding truyền thống.
-
-**7. Xác thực & Kiểm chứng (Validation):**
-
-Để đảm bảo những so sánh trên của AI, mình đã thực hiện các bước kiểm chứng sau:
-
-- **Đối chiếu Documentation:** Mình so sánh định nghĩa BLoC của AI với trang chủ https://bloclibrary.dev. AI phản hồi chính xác về mô hình *Event-in, State-out*.
-- **Kiểm tra tính nhất quán:** AI chỉ ra BLoC giúp tránh side-effect nhờ luồng một chiều. Điều này đúng với thực tế Flutter vì Widget chỉ nên rebuild khi State thay đổi, không nên trigger logic lồng nhau.
-- **Đánh giá rủi ro:** AI cảnh báo MVVM dễ bị "fat ViewModel". Điều này hoàn toàn hợp lý vì không có ràng buộc phân chia Event/State rõ ràng như BLoC, lập trình viên rất dễ "nhồi nhét" mọi logic vào một nơi.
-
-> **Kết luận kiểm chứng:** Nội dung AI cung cấp là đáng tin cậy
-
----
+**Choose MVVM when:**
+- Small to medium projects requiring fast time-to-market.
+- Simple data structures with few complex constraints.
+- Team is familiar with traditional ViewModel binding.
 
 ---
 
 ## AI Implementation Log
 
-### Giai đoạn 1: Lên kế hoạch & Setup (Planning)
-
-**Bước 1: Xác định cấu trúc thư mục (Clean Architecture & BLoC)**
-- Mình yêu cầu AI đề xuất cấu trúc dự án tuân thủ **Clean Architecture** kết hợp với **BLoC pattern**, được tổ chức theo hướng **Feature-First**:
-    - **Domain Layer:** Chứa Model/Entities (`id`, `name`, `email`...).
-    - **Data Layer:** Chứa Repository để tách biệt logic lấy dữ liệu (Mock API) khỏi ứng dụng.
-    - **Presentation Layer:** Chứa BLoC (State Management) và UI (Pages/Widgets).
-- Cách tổ chức folder theo **Feature-First** (`auth`, `contacts`) giúp ứng dụng cực kỳ linh hoạt và dễ dàng mở rộng sang các tính năng khác mà không làm rối cấu trúc cũ.
-
-**Bước 2: Thiết kế luồng dữ liệu (Data Flow)**
-- **Feature Login:** `AuthEvent` (Login/Logout) → `AuthBloc` (gọi mock API) → `AuthState` (Success/Failure) → UI chuyển màn hình.
-- **Feature Contacts:** `ContactEvent` (Load/Search) → `ContactBloc` (lọc dữ liệu) → `ContactState` (Loaded/Empty).
-
-**Bước 3: Chọn UI/UX Style (Material 3)**
-- Sử dụng Material 3 với hệ thống màu sắc nhất quán.
-- Mock dữ liệu: 12 contacts để đảm bảo hiển thị đẹp trên danh sách.
-
-**Bước 4: Tổ chức nhánh Git (Git Flow)**
-- Để tuân thủ quy trình chuyên nghiệp, mình đã tổ chức các nhánh như sau:
-    - `main`: Nhánh ổn định cuối cùng.
-    - `develop`: Nhánh tích hợp các tính năng.
-    - `login`: Nhánh tính năng Đăng nhập.
-    - `contact`: Nhánh tính năng Danh sách liên hệ (tách từ `develop`).
-- Mọi tính năng đều được làm trên nhánh riêng và merge vào `develop` sau khi hoàn tất.
-
-### Giai đoạn 2: [Done] Thực hiện tính năng Login
-(Nội dung giữ nguyên)
-
-### Giai đoạn 3: [Done] Thực hiện tính năng Danh sách liên hệ
-(Nội dung giữ nguyên)
-
-### Giai đoạn 4: Tích hợp & Kiểm chứng (Integration)
-
-- **Quy trình Merge:**
-    1. Hoàn thiện Login trên nhánh `login` → Merge vào `develop`.
-    2. Tách nhánh `contact` từ `develop`.
-    3. Hoàn thiện Contact List → Merge ngược lại vào `develop`.
-- **Kết nối BLoC:** Sử dụng `MultiBlocProvider` tại `main.dart` để quản lý toàn bộ State.
-- **Điều hướng:** Khi `AuthState` là `Success`, ứng dụng tự động điều hướng sang `ContactListPage`.
-- **Đăng xuất:** Tích hợp nút Logout tại trang danh sách, xóa trạng thái Auth và quay về màn hình đăng nhập.
-
-### Nhat ky Debug (Debugging Log)
-
-Mục này ghi lại các lỗi phát sinh trong quá trình phát triển và cách AI đã xử lý chúng.
-
-- **Vấn đề 1:** Lỗi build `ContactModel isn't a type` và các lỗi Type liên quan (`ContactLoading`, `ContactLoaded`).
-- **Nguyên nhân:** File `contact_model.dart` bị mất trong quá trình tổ chức lại các nhánh Git (untracked files).
-- **Giải pháp:** Khôi phục file `ContactModel` trong thư mục `domain` và kiểm tra lại toàn bộ import.
-- **Trạng thái:** Fixed
-
-- **Vấn đề 2:** Lỗi `Target of URI doesn't exist: 'package:flutter_bloc/flutter_bloc.dart'`.
-- **Nguyên nhân:** File `pubspec.yaml` bị mất các dependencies quan trọng sau khi thay đổi nhánh.
 - **Giải pháp:** Thêm lại `flutter_bloc`, `equatable`, `uuid` và chạy `flutter pub get`.
 - **Trạng thái:** Fixed
 

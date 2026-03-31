@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
-          title: 'Flutter AI Intern Test',
+          title: 'Flutter BLoC Contact App',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             useMaterial3: true,
