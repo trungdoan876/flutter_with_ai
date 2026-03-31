@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../auth/presentation/bloc/auth_bloc.dart';
-import '../../auth/presentation/bloc/auth_event.dart';
-import '../domain/contact_model.dart';
-import '../presentation/bloc/contact_bloc.dart';
-import '../presentation/bloc/contact_event.dart';
-import '../presentation/bloc/contact_state.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../auth/presentation/bloc/auth_event.dart';
+import '../../domain/contact_model.dart';
+import '../bloc/contact_bloc.dart';
+import '../bloc/contact_event.dart';
+import '../bloc/contact_state.dart';
 
 class ContactListPage extends StatefulWidget {
   const ContactListPage({super.key});

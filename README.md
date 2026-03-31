@@ -738,9 +738,19 @@ UI → vm.increment() → count++ → notifyListeners() → UI rebuild
 
 Mục này ghi lại các lỗi phát sinh trong quá trình phát triển và cách AI đã xử lý chúng.
 
-- **Vấn đề:** Lỗi build `ContactModel isn't a type` và các lỗi Type liên quan (`ContactLoading`, `ContactLoaded`).
+- **Vấn đề 1:** Lỗi build `ContactModel isn't a type` và các lỗi Type liên quan (`ContactLoading`, `ContactLoaded`).
 - **Nguyên nhân:** File `contact_model.dart` bị mất trong quá trình tổ chức lại các nhánh Git (untracked files).
 - **Giải pháp:** Khôi phục file `ContactModel` trong thư mục `domain` và kiểm tra lại toàn bộ import.
+- **Trạng thái:** ✅ Fixed
+
+- **Vấn đề 2:** Lỗi `Target of URI doesn't exist: 'package:flutter_bloc/flutter_bloc.dart'`.
+- **Nguyên nhân:** File `pubspec.yaml` bị mất các dependencies quan trọng sau khi thay đổi nhánh.
+- **Giải pháp:** Thêm lại `flutter_bloc`, `equatable`, `uuid` và chạy `flutter pub get`.
+- **Trạng thái:** ✅ Fixed
+
+- **Vấn đề 3:** Lỗi các lớp State và Bloc không được nhận diện dù đã import đúng file.
+- **Nguyên nhân:** Sử dụng sai đường dẫn tương đối (relative path) trong `contact_list_page.dart` (thừa cấp thư mục `/presentation`).
+- **Giải pháp:** Cập nhật lại import thành `../bloc/...` thay vì `../presentation/bloc/...`.
 - **Trạng thái:** ✅ Fixed
 
 ---
