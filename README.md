@@ -199,8 +199,8 @@ Please:
 
 ---
 
-**Prompt Version 2 (V2):**
-```markdown
+**Prompt version 2:**
+```
 You are a senior software engineer.
 
 I have a Git merge conflict in my project:
@@ -228,15 +228,26 @@ Output format:
 - Test suggestions
 ```
 
-**Evaluation of Version 2:**
-- **Clear Structured Output:** Easier to read and follow step-by-step.
-- **Specific Constraints:** AI does not arbitrarily delete or refactor code.
-- **Includes Testing Suggestions:** Provides immediate methods to verify the resolution.
-- **English Prompting:** AI understands original intent more precisely with less risk of misinterpretation.
+**Version 2 Review:**
+- **Clear formatted output** → easy to read and follow step-by-step
+- **Specific constraints** → AI doesn't arbitrarily delete or refactor code beyond the requirements
+- **Includes suggestion testing** → knows how to verify after resolving
+- **English** → AI understands more accurately and is less likely to misinterpret intent
 
-### 2.4 When AI Can Be Wrong in Git
+---
 
-AI **does not know the real context of the project** — this is its biggest weakness in Git usage. AI can suggest incorrect business logic or dangerous commands like force push without warning about data loss. Always run `git status` and `git log` to confirm the actual state of the repository first.
+### 2.4 When Can AI Make Mistakes in Git?
+
+AI **doesn't know the actual context of the project** — this is the biggest weakness when using AI for Git.
+
+**Some typical cases:**
+- Merge conflicts in business logic: AI doesn't understand business rules → may choose the wrong code version
+- Undo commits (`git reset`, `git revert`): AI doesn't know what impact that commit has on other branches
+- Force push (`git push --force`): AI may suggest it without warning about losing other people's code
+- Delete a branch: AI doesn't know if that branch is being used in another environment
+- Git command versions: Some syntax may differ between Git versions
+
+> **Principle:** With Git, AI is only a support tool — always run `git status` and `git log` to confirm the actual state before executing the AI-suggested command. AI helps speed up the process of working with Git, but without proper validation, it can also lead to code loss.
 
 ---
 
@@ -336,7 +347,6 @@ class CounterPage extends StatelessWidget {
 - Avoid BLoC for simple UI-only logic (use `setState`).
 
 ### 3.2 BLoC vs MVVM Comparison
-
 - **BLoC:** UI -> dispatch(Event) -> Bloc -> emit(State) -> UI rebuild (Unidirectional).
 - **MVVM:** UI -> vm.method() -> data changes -> notifyListeners() -> UI rebuild.
 - **Decision:** BLoC is better for consistency and scalability in large teams, while MVVM is better for fast prototyping in smaller projects.
@@ -346,7 +356,7 @@ class CounterPage extends StatelessWidget {
 ## AI Implementation Log
 
 ### Development Phases
-1. **Planning:** AI used for folder structure (Feature-First) and Data Flow design.
+1. **Planning:** AI used for directory structure (Feature-First) and Data Flow design.
 2. **Implementation:** AI-assisted development of Auth Repository, BLoC, and Material 3 UI.
 3. **Integration:** Git merge flow via `develop` branch and Global state management using `MultiBlocProvider`.
 
@@ -354,13 +364,13 @@ class CounterPage extends StatelessWidget {
 
 - **Issue 1:** Build error `ContactModel isn't a type`.
 - **Root Cause:** Missing model file after branch merge.
-- **Solution:** Re-generated and verified the Domain model.
+- **Solution:** Restored the Domain model and fixed all imports.
 
 - **Issue 2:** Dependency loss in `pubspec.yaml` after branch switching.
-- **Solution:** Added `flutter_bloc`, `equatable`, and `uuid` to the manifest.
+- **Solution:** Re-added `flutter_bloc`, `equatable`, and `uuid` then ran `flutter pub get`.
 
 - **Issue 3:** Recognition failure of classes due to incorrect relative paths.
-- **Solution:** Fixed manual imports to follow `../bloc/` architecture.
+- **Solution:** Updated imports to use `../bloc/` instead of `../presentation/bloc/`.
 
 ---
 
@@ -370,11 +380,11 @@ class CounterPage extends StatelessWidget {
 ```
 lib/
 ├── core/
-│   └── theme/          <- Material 3 Theme
+│   └── theme/          # Material 3 Theme
 ├── features/
-│   ├── auth/           <- Authentication (Login, Bloc, Data)
-│   └── contacts/       <- Contacts (Search, List, Bloc, Data)
-└── main.dart           <- Global Providers & App Entry
+│   ├── auth/           # Authentication feature
+│   └── contacts/       # Contact management feature
+└── main.dart           # Global Providers & App Entry
 ```
 
 ### Core Features
