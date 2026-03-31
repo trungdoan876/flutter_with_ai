@@ -80,6 +80,13 @@ Extra rules:
 - Point out common mistakes
 - Help debug errors step-by-step
 - Keep everything simple and practical
+
+Output format:
+- Time block (e.g., Hour 1–2)
+- Concept
+- Code
+- Explanation
+- Task
 ```
 
 **Results:** 
@@ -147,20 +154,53 @@ chore: add flutter_bloc, equatable to pubspec.yaml
 
 ### 2.2 Using AI to Resolve Merge Conflicts
 
-Instead of guessing which version to keep, I used AI as a "consultant" that understands the code. AI helps explain *why* a certain version should be kept, helping me learn from the conflict.
+Instead of guessing which version to keep, I used AI as a "consultant" that understands the code:
+
+1. **Paste conflict block into AI** with a brief description of the branches' purposes.
+2. **Request AI Analysis:** Are the changes contradictory? Which one should be kept?
+3. **Read AI Explanation** -> understand reasoning -> make decision.
+4. **Apply, run app** to confirm, then commit.
+
+**Key point:** AI helps explain *why* a certain version should be kept, helping me learn from the conflict.
 
 ---
 
-### 2.3 Prompt: Resolving Git Conflicts
-
-**Prompt Generation Strategy:**
+### 2.3 Prompt Strategy: Resolving Git Conflicts
 
 **Prompt Version 1 (V1):**
-- Simple request for code resolution.
-- Resulting in inconsistent formatting and lack of context explanation.
+```markdown
+I am encountering a merge conflict in file [file name].
+
+Here is the conflict content:
+<<<<<<< HEAD (my branch: feature/login)
+[paste your branch code]
+=======
+[paste the other branch code]
+>>>>>>> main
+
+Context:
+- My branch: [describe what the branch is doing]
+- Main branch: [describe what has changed in main]
+- File purpose: [describe the file's function]
+
+Please:
+1. Explain what each version is trying to do
+2. Recommend which version to keep and why
+3. If possible, suggest how to combine both versions
+4. Identify risks if the wrong version is chosen
+```
+
+**Evaluation of Version 1:**
+- **Unstructured Output:** AI responds freely, sometimes overly verbose and difficult to follow.
+- **Lack of Constraints:** AI may occasionally delete code or refactor beyond the requirements.
+- **Missing Testing Steps:** After resolving the conflict, there are no clear instructions on how to verify the result.
+
+**Upgrade to Version 2 to fix the above three issues**
+
+---
 
 **Prompt Version 2 (V2):**
-```
+```markdown
 You are a senior software engineer.
 
 I have a Git merge conflict in my project:
@@ -187,6 +227,12 @@ Output format:
 - Risks
 - Test suggestions
 ```
+
+**Evaluation of Version 2:**
+- **Clear Structured Output:** Easier to read and follow step-by-step.
+- **Specific Constraints:** AI does not arbitrarily delete or refactor code.
+- **Includes Testing Suggestions:** Provides immediate methods to verify the resolution.
+- **English Prompting:** AI understands original intent more precisely with less risk of misinterpretation.
 
 ### 2.4 When AI Can Be Wrong in Git
 
