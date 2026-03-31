@@ -62,7 +62,7 @@ class _ContactListPageState extends State<ContactListPage> {
               ListTile(
                 leading: const Icon(Icons.phone, color: Colors.deepPurple),
                 title: Text(contact.phone),
-                subtitle: const Text('Số điện thoại'),
+                subtitle: const Text('Phone Number'),
               ),
               ListTile(
                 leading: const Icon(Icons.email, color: Colors.deepPurple),
@@ -81,7 +81,7 @@ class _ContactListPageState extends State<ContactListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Danh sách liên hệ'),
+        title: const Text('Contact List'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -99,7 +99,7 @@ class _ContactListPageState extends State<ContactListPage> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Tìm kiếm theo tên, SĐT, email...',
+                hintText: 'Search by name, phone, email...',
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -117,7 +117,7 @@ class _ContactListPageState extends State<ContactListPage> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is ContactLoaded) {
                   if (state.contacts.isEmpty) {
-                    return const Center(child: Text('Không tìm thấy liên hệ nào.'));
+                    return const Center(child: Text('No contacts found.'));
                   }
                   return ListView.separated(
                     itemCount: state.contacts.length,

@@ -69,8 +69,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'Vui lòng nhập email';
-                    if (!value.contains('@')) return 'Email không hợp lệ';
+                    if (value == null || value.isEmpty) return 'Please enter your email';
+                    if (!value.contains('@')) return 'Invalid email format';
                     return null;
                   },
                 ),
@@ -78,14 +78,14 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: _passwordController,
                   decoration: const InputDecoration(
-                    labelText: 'Mật khẩu',
+                    labelText: 'Password',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.lock),
                   ),
                   obscureText: true,
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'Vui lòng nhập mật khẩu';
-                    if (value.length < 6) return 'Mật khẩu phải từ 6 ký tự';
+                    if (value == null || value.isEmpty) return 'Please enter your password';
+                    if (value.length < 6) return 'Password must be at least 6 characters';
                     return null;
                   },
                 ),
@@ -104,14 +104,14 @@ class _LoginPageState extends State<LoginPage> {
                           backgroundColor: Theme.of(context).primaryColor,
                           foregroundColor: Colors.white,
                         ),
-                        child: const Text('ĐĂNG NHẬP'),
+                        child: const Text('LOGIN'),
                       ),
                     );
                   },
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'Tài khoản test: test@example.com / password123',
+                  'Test account: test@example.com / password123',
                   style: TextStyle(color: Colors.grey, fontSize: 12),
                 ),
               ],
