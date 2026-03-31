@@ -255,7 +255,21 @@ AI **doesn't know the actual context of the project** — this is the biggest we
 
 ### 3.1 Learning BLoC with AI
 
-**AI Learning Strategy (v2):**
+**Prompt Version 1 (V1):**
+```markdown
+Please explain the BLoC model in Flutter to me as if I know nothing about it.
+
+Including:
+1. What problem does BLoC solve?
+2. Three core concepts: Event, State, Bloc
+3. Data flow: UI → Event → Bloc → State → UI
+4. Create a simple example: a counter with an Increment event
+5. What is Equatable and why is it needed with BLoC?
+
+Tech: flutter_bloc 8.x (use on<Event> handler, NOT mapEventToState)
+```
+
+**AI Learning Strategy Version 2 (V2 - Optimized):**
 
 **1. BLoC in simple terms (<= 5 lines):**
 ```
@@ -343,13 +357,41 @@ class CounterPage extends StatelessWidget {
 - **Bloc** (The Brain) = Processes Events -> Performs Logic -> Emits new States.
 
 **5. When to use BLoC vs NOT:**
-- Use BLoC for large systems and shared state.
-- Avoid BLoC for simple UI-only logic (use `setState`).
+
+**Use BLoC when:**
+- App has many screens and needs to share state.
+- Complex logic requiring Clean Architecture.
+- Team projects needing maintainable code.
+
+**Avoid BLoC when:**
+- Simple apps (e.g., small counter, basic CRUD).
+- Boilerplate is too much for simple logic.
+- `setState` or Provider is sufficient.
+
+---
 
 ### 3.2 BLoC vs MVVM Comparison
+
+**AI Response Summary:**
+
+**BLoC version:** (Standard Event-State flow)
+**MVVM version:** (ViewModel with ChangeNotifier/notifyListeners)
+
+**Data flow Comparison:**
 - **BLoC:** UI -> dispatch(Event) -> Bloc -> emit(State) -> UI rebuild (Unidirectional).
 - **MVVM:** UI -> vm.method() -> data changes -> notifyListeners() -> UI rebuild.
-- **Decision:** BLoC is better for consistency and scalability in large teams, while MVVM is better for fast prototyping in smaller projects.
+
+**Conclusion - Choosing the right one:**
+
+**Choose BLoC when:**
+- Large systems with complex state management.
+- Consistency (Pattern-based) is required for team collaboration.
+- High priority on Unit Testing business logic.
+
+**Choose MVVM when:**
+- Small to medium projects requiring fast time-to-market.
+- Simple data structures with few complex constraints.
+- Team is familiar with traditional ViewModel binding.
 
 ---
 
@@ -362,15 +404,20 @@ class CounterPage extends StatelessWidget {
 
 ### Debugging Log
 
-- **Issue 1:** Build error `ContactModel isn't a type`.
-- **Root Cause:** Missing model file after branch merge.
-- **Solution:** Restored the Domain model and fixed all imports.
+**Problem 1:** Build error `ContactModel isn't a type`.
+- **Cause:** Missing model file after branch merge.
+- **Solution:** Re-generated and verified the Domain model.
+- **Status:** Fixed
 
-- **Issue 2:** Dependency loss in `pubspec.yaml` after branch switching.
+**Problem 2:** Dependency loss in `pubspec.yaml` after branch switching.
+- **Cause:** The `pubspec.yaml` file was not up to date during the branch merge.
 - **Solution:** Re-added `flutter_bloc`, `equatable`, and `uuid` then ran `flutter pub get`.
+- **Status:** Fixed
 
-- **Issue 3:** Recognition failure of classes due to incorrect relative paths.
-- **Solution:** Updated imports to use `../bloc/` instead of `../presentation/bloc/`.
+**Problem 3:** Error: State and Bloc classes are not recognized despite importing the correct file.
+- **Cause:** Incorrect use of relative path in `contact_list_page.dart` (extra directory `/presentation`).
+- **Solution:** Update the import to `../bloc/...` instead of `../presentation/bloc/...`.
+- **Status:** Fixed
 
 ---
 
@@ -380,11 +427,21 @@ class CounterPage extends StatelessWidget {
 ```
 lib/
 ├── core/
-│   └── theme/          # Material 3 Theme
+│   └── theme/          # AppTheme (Material 3)
 ├── features/
-│   ├── auth/           # Authentication feature
-│   └── contacts/       # Contact management feature
-└── main.dart           # Global Providers & App Entry
+│   ├── auth/
+│   │   ├── data/           # AuthRepository (mock)
+│   │   ├── domain/         # UserModel
+│   │   └── presentation/
+│   │       ├── bloc/       # AuthBloc, AuthEvent, AuthState
+│   │       └── pages/      # LoginPage
+│   └── contacts/
+│       ├── data/           # ContactRepository (12 contact mock)
+│       ├── domain/         # ContactModel
+│       └── presentation/
+│           ├── bloc/       # ContactBloc, ContactEvent, ContactState
+│           └── pages/      # ContactListPage
+└── main.dart
 ```
 
 ### Core Features
@@ -402,7 +459,3 @@ flutter run
 **Test Account:**
 - Email: `test@example.com`
 - Password: `password123`
-
----
-
-*Verified by the author — every line of code is reviewed and tested.*
