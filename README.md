@@ -1,10 +1,10 @@
-# 📱 Flutter with AI – Bài Tập Sử dụng AI
+# Flutter with AI - Bai Tap Su dung AI
 
-> Xây dựng bằng Flutter + BLoC, phát triển hoàn toàn với sự hỗ trợ của AI.
+> Xay dung bang Flutter + BLoC, phat trien hoan toan voi su ho tro cua AI.
 
 ---
 
-## 📋 Mục lục
+## Muc luc
 - [Tổng quan ứng dụng](#tổng-quan-ứng-dụng)
 - [Phần 1 – Platform (AI-First Thinking)](#phần-1--platform-ai-first-thinking)
 - [Phần 2 – Source Control (AI Usage)](#phần-2--source-control-ai-usage)
@@ -14,7 +14,7 @@
 
 ---
 
-## 📱 Tổng quan ứng dụng
+## Tong quan ung dung
 
 Ứng dụng Flutter gồm 2 màn hình chính:
 - **Màn hình Đăng nhập** – kiểm tra email/mật khẩu, xác thực mock, hiển thị lỗi qua SnackBar
@@ -476,7 +476,7 @@ Button Click (UI)
       ↓
    UI update
 
-👉 UI → Event → Bloc → State → UI
+- UI -> Event -> Bloc -> State -> UI
 ```
 
 **3. Minimal Working Example (Counter):**
@@ -538,16 +538,16 @@ class CounterPage extends StatelessWidget {
 **4. Giải thích từng phần:**
 - **Event** (Input) = hành động người dùng → `IncrementEvent`, `DecrementEvent`
 - **State** (Output) = dữ liệu hiện tại cho UI → `count`
-- **Bloc** (Brain 🧠) = nhận Event → xử lý logic → emit State mới
+- **Bloc** (Brain) = nhận Event → xử lý logic → emit State mới
 
 **5. When to use BLoC vs NOT:**
 
-✅ Dùng BLoC khi:
+Dung BLoC khi:
 - App có nhiều màn hình, cần share state
 - Logic phức tạp, cần clean architecture
 - Team project, dễ maintain
 
-❌ Tránh BLoC khi:
+Tranh BLoC khi:
 - App đơn giản (counter nhỏ, CRUD đơn)
 - Boilerplate quá nhiều cho logic nhỏ
 - `setState` hoặc Provider là đủ
@@ -691,7 +691,7 @@ UI → vm.increment() → count++ → notifyListeners() → UI rebuild
 
 ---
 
-## 📝 AI Implementation Log
+## AI Implementation Log
 
 ### Giai đoạn 1: Lên kế hoạch & Setup (Planning)
 
@@ -734,7 +734,7 @@ UI → vm.increment() → count++ → notifyListeners() → UI rebuild
 - **Điều hướng:** Khi `AuthState` là `Success`, ứng dụng tự động điều hướng sang `ContactListPage`.
 - **Đăng xuất:** Tích hợp nút Logout tại trang danh sách, xóa trạng thái Auth và quay về màn hình đăng nhập.
 
-### 🐞 Nhật ký Debug (Debugging Log)
+### Nhat ky Debug (Debugging Log)
 
 Mục này ghi lại các lỗi phát sinh trong quá trình phát triển và cách AI đã xử lý chúng.
 
@@ -797,7 +797,7 @@ lib/
 
 ---
 
-## ⚙️ Cài đặt & Chạy
+## Cai dat & Chay
 
 ```bash
 git clone https://github.com/<your-username>/flutter_with_ai.git
@@ -806,11 +806,9 @@ flutter pub get
 flutter run
 ```
 
-**Tài khoản test:**
-| Trường | Giá trị |
-|--------|---------|
-| Email | `test@example.com` |
-| Mật khẩu | `password123` |
+**Tai khoan test:**
+- Email: `test@example.com`
+- Mat khau: `password123`
 
 ---
 
